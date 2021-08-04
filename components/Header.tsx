@@ -7,12 +7,22 @@ import {
   Button,
   makeStyles,
   Box,
+  styled,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { useAuth } from "../auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SideMenu } from "./Menu";
+
+export const NoSelect = styled(Box)({
+  webkitTouchCallout: "none",
+  WebkitUserSelect: "none",
+  KhtmlUserSelect: "none",
+  mozUserSelect: "none",
+  msUserSelect: "none",
+  userSelect: "none",
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    fontFamily: "Cinzel",
   },
 }));
 
@@ -32,7 +43,6 @@ export const Header = () => {
   const { user } = useAuth();
   const router = useRouter();
   const isLogin = router.pathname.includes("/login");
-  const isSignUp = router.pathname.includes("/signup");
   return (
     <AppBar position="static">
       <Toolbar>
@@ -51,9 +61,9 @@ export const Header = () => {
           close={() => setIsOpen(false)}
           isOpen={isOpen}
         />
-        <Typography variant="h5" className={classes.title}>
+        <NoSelect className={classes.title} fontSize="32px">
           Scalelaced
-        </Typography>
+        </NoSelect>
         {!user && !isLogin && (
           <Link href="/login" passHref>
             <Button variant="contained" size="small">

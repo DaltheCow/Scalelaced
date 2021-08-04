@@ -1,5 +1,4 @@
-import * as React from "react";
-import styled from "styled-components";
-export const Text = styled.span`
-  font-family: Roboto;
-`;
+import { styled } from "@material-ui/core";
+export const Text = styled("span")({
+  fontFamily: "Roboto",
+});
