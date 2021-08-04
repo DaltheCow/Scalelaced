@@ -1,5 +1,4 @@
-import { Header } from "./Header";
-
+import Header from "./Header";
 export interface LayoutProps {}
 
 const Layout: React.FunctionComponent<LayoutProps> = ({ children }) => {

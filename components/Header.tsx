@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { SideMenu } from "./Menu";
 
-export const NoSelect = styled(Box)({
+const NoSelect = styled(Box)({
   webkitTouchCallout: "none",
   WebkitUserSelect: "none",
   KhtmlUserSelect: "none",
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Header = () => {
+const Header = () => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = React.useState(false);
   const { user } = useAuth();
@@ -82,3 +82,5 @@ export const Header = () => {
     </AppBar>
   );
 };
+
+export default Header;
