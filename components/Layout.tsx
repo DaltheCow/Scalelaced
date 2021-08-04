@@ -1,9 +1,11 @@
+import { Header } from "./Header";
+
 export interface LayoutProps {}
 
 const Layout: React.FunctionComponent<LayoutProps> = ({ children }) => {
   return (
     <div>
-      navbar
+      <Header />
       {children}
       footer
     </div>

@@ -1,31 +1,25 @@
-import Head from "next/head";
-import WriteToCloudFirestore from "../components/cloudFirestore/Write";
-import { useUser } from "../firebase/useUser";
+import React, { useEffect, useCallback } from "react";
+import Link from "next/link";
+import { useAuth } from "../auth";
 
-export default function Home() {
-  const { user, logout } = useUser();
-  if (user) {
-    return (
-      <div>
-        <Head>
-          <title>Scale Laced</title>
-        </Head>
-        <p>Welcome {user?.name}</p>
-        <button onClick={logout}>logout</button>
-        <WriteToCloudFirestore />
-      </div>
-    );
-  } else {
-    return (
-      <div>
-        <Head>
-          <title>Scale Laced</title>
-        </Head>
-        <p>
-          <a href="/auth">Log In!</a>
-        </p>
-        <WriteToCloudFirestore />
-      </div>
-    );
-  }
-}
+const Home = () => {
+  const { user } = useAuth();
+  return (
+    <div style={{ padding: "40px" }}>
+      <p>{`User ID: ${user ? user.uid : "no user signed in"}`}</p>
+
+      <p>
+        <Link href="/authenticated">
+          <a>Go to authenticated route</a>
+        </Link>
+      </p>
+      <p>
+        <Link href="/login">
+          <a>Login</a>
+        </Link>
+      </p>
+    </div>
+  );
+};
+
+export default Home;
