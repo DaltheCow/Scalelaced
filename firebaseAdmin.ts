@@ -1,12 +1,6 @@
 import * as firebaseAdmin from "firebase-admin";
 
 if (!firebaseAdmin.apps.length) {
-  console.log(
-    `${process.env.NEXT_PUBLIC_FIREBASE_ADMIN_PRIVATE_KEY?.replace(
-      /\\n/g,
-      "\n"
-    )}`
-  );
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert({
       type: `${process.env.NEXT_PUBLIC_FIREBASE_TYPE}`,
