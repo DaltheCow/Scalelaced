@@ -4,7 +4,7 @@ if (!firebaseAdmin.apps.length) {
   firebaseAdmin.initializeApp({
     credential: firebaseAdmin.credential.cert({
       type: process.env.NEXT_PUBLIC_FIREBASE_TYPE,
-      project_id: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      project_id: "scalelaced",
       private_key_id: process.env.NEXT_PUBLIC_FIREBASE_PRIVATE_KEY_ID,
       private_key: process.env.NEXT_PUBLIC_FIREBASE_ADMIN_PRIVATE_KEY,
       client_email: process.env.NEXT_PUBLIC_FIREBASE_ADMIN_CLIENT_EMAIL,
