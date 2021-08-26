@@ -7,7 +7,15 @@ export default function ContentEditable({
   onBlur,
   onKeyPress,
   onKeyDown,
+  html,
   ...props
+}: {
+  onChange: any;
+  onInput: any;
+  onBlur: any;
+  onKeyPress: any;
+  onKeyDown: any;
+  html: any;
 }) {
   const onChangeRef = React.useRef(onChange);
   const onInputRef = React.useRef(onInput);
@@ -34,6 +42,7 @@ export default function ContentEditable({
   return (
     <ReactContentEditable
       {...props}
+      html={html}
       onChange={
         onChange
           ? (...args) => {
@@ -41,7 +50,7 @@ export default function ContentEditable({
                 onChangeRef.current(...args);
               }
             }
-          : undefined
+          : () => {}
       }
       onInput={
         onInput
@@ -50,7 +59,7 @@ export default function ContentEditable({
                 onInputRef.current(...args);
               }
             }
-          : undefined
+          : () => {}
       }
       onBlur={
         onBlur
@@ -59,7 +68,7 @@ export default function ContentEditable({
                 onBlurRef.current(...args);
               }
             }
-          : undefined
+          : () => {}
       }
       onKeyPress={
         onKeyPress
@@ -68,7 +77,7 @@ export default function ContentEditable({
                 onKeyPressRef.current(...args);
               }
             }
-          : undefined
+          : () => {}
       }
       onKeyDown={
         onKeyDown
@@ -77,7 +86,7 @@ export default function ContentEditable({
                 onKeyDownRef.current(...args);
               }
             }
-          : undefined
+          : () => {}
       }
     />
   );
