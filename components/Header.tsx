@@ -3,7 +3,6 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  Typography,
   Button,
   makeStyles,
   Box,
@@ -14,6 +13,11 @@ import { useAuth } from "../auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SideMenu } from "./Menu";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import Title from "./Title";
+import CreateBar from "./CreateBar";
+import Image from "next/image";
+import logo from "../public/storivu.svg";
 
 const NoSelect = styled(Box)({
   webkitTouchCallout: "none",
@@ -27,6 +31,17 @@ const NoSelect = styled(Box)({
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+  },
+  textField: {
+    "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "rgba(0,0,0,0)",
+    },
+    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#e0e0e0",
+    },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "white",
+    },
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -43,41 +58,70 @@ const Header = () => {
   const { user } = useAuth();
   const router = useRouter();
   const isLogin = router.pathname.includes("/login");
+  const isCreate = router.pathname.includes("/create");
+  const matches = useMediaQuery("(min-width:800px)");
+
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton
-          edge="start"
-          className={classes.menuButton}
-          color="inherit"
-          aria-label="menu"
-          aria-haspopup="true"
-          onClick={() => setIsOpen(!isOpen)}
+        <div style={{ minWidth: "250px", display: "flex" }}>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+            aria-haspopup="true"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <SideMenu
+            open={() => setIsOpen(true)}
+            close={() => setIsOpen(false)}
+            isOpen={isOpen}
+          />
+          <Link href="/">
+            <Box style={{ display: "flex", cursor: "pointer" }}>
+              <Image src={logo} alt="logo" />
+              <a
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  margin: "3.5px 0 0 8px",
+                }}
+              >
+                <NoSelect className={classes.title} fontSize="32px">
+                  Storivu
+                </NoSelect>
+              </a>
+            </Box>
+          </Link>
+        </div>
+        <Title />
+        <div
+          style={{
+            // maybe only minwidth with title present
+            minWidth: matches ? "250px" : "",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
         >
-          <MenuIcon />
-        </IconButton>
-        <SideMenu
-          open={() => setIsOpen(true)}
-          close={() => setIsOpen(false)}
-          isOpen={isOpen}
-        />
-        <NoSelect className={classes.title} fontSize="32px">
-          Scalelaced
-        </NoSelect>
-        {!user && !isLogin && (
-          <Link href="/login" passHref>
-            <Button variant="contained" size="small">
-              Login
-            </Button>
-          </Link>
-        )}
-        {user && (
-          <Link href={`/${user.displayName}`} passHref>
-            <Button variant="text" color="secondary" size="small">
-              {user.displayName}
-            </Button>
-          </Link>
-        )}
+          <CreateBar />
+          {!user && !isLogin && !isCreate && (
+            <Link href="/login" passHref>
+              <Button variant="contained" size="small">
+                Login
+              </Button>
+            </Link>
+          )}
+          {user && !isCreate && (
+            <Link href={`/${user.displayName}`} passHref>
+              <Button variant="text" color="secondary" size="small">
+                {user.displayName}
+              </Button>
+            </Link>
+          )}
+        </div>
       </Toolbar>
     </AppBar>
   );
