@@ -76,7 +76,7 @@ const Title = () => {
     event.target.scrollTop = 0;
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e?.currentTarget?.innerHTML || "");
   };
 
@@ -90,6 +90,9 @@ const Title = () => {
         onChange={handleChange}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onInput={() => {}}
+        onKeyPress={() => {}}
+        onKeyDown={() => {}}
         style={{
           minWidth: "100px",
           padding: "2px 4px",
