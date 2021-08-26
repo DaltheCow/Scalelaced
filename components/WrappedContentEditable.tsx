@@ -8,6 +8,11 @@ export default function ContentEditable({
   onKeyPress,
   onKeyDown,
   html,
+  id,
+  onFocus,
+  onMouseEnter,
+  onMouseLeave,
+  style,
   ...props
 }: {
   onChange: any;
@@ -16,6 +21,11 @@ export default function ContentEditable({
   onKeyPress: any;
   onKeyDown: any;
   html: any;
+  id: any;
+  onFocus: any;
+  onMouseEnter: any;
+  onMouseLeave: any;
+  style: any;
 }) {
   const onChangeRef = React.useRef(onChange);
   const onInputRef = React.useRef(onInput);
@@ -43,6 +53,11 @@ export default function ContentEditable({
     <ReactContentEditable
       {...props}
       html={html}
+      id={id}
+      onFocus={onFocus}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      style={style}
       onChange={
         onChange
           ? (...args) => {
