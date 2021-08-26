@@ -6,8 +6,8 @@ import ContentEditable from "./WrappedContentEditable";
 function clearSelection() {
   if (window.getSelection) {
     window?.getSelection()?.removeAllRanges();
-  } else if (document?.selection) {
-    document?.selection?.empty();
+  } else if ((document as any)?.selection) {
+    (document as any)?.selection?.empty();
   }
 }
 
