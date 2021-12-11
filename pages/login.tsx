@@ -36,14 +36,9 @@ const Login = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <Box
-              display="flex"
-              flexDirection="column"
-              paddingX={5}
-              paddingY={7}
-            >
+            <Box display="flex" flexDirection="column" paddingX={5} paddingY={7}>
               <Box fontSize={32} fontWeight="bold">
-                <Text>Log in to Scalelaced</Text>
+                <Text>Log in to Storivu</Text>
               </Box>
               <Box display="flex" flexDirection="column" width={300}>
                 {isInitialized ? (

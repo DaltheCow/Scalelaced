@@ -2,6 +2,7 @@ import { Grid, useMediaQuery } from "@material-ui/core";
 import React from "react";
 import { useTheme } from "@material-ui/core/styles";
 import ContentEditable from "./WrappedContentEditable";
+import { useTitleContext } from "./contexts/TitleContext";
 
 function clearSelection() {
   if (window.getSelection) {
@@ -14,10 +15,14 @@ function clearSelection() {
 const Title = () => {
   const [isHovered, setIsHovered] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
-  const [title, setTitle] = React.useState("Untitled");
-
+  const { title, setTitle } = useTitleContext();
+  // text is separate from title since it can have html entities
+  const [text, setText] = React.useState("Untitled");
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("xs"));
+  const contentEditable = React.useRef<any>();
+  const characterLimit = 300;
+  const warningLimit = 15;
   React.useEffect(() => {
     const pasteListener = document
       ?.getElementById("title")
@@ -71,43 +76,72 @@ const Title = () => {
   const handleUnfocus = (event: React.FocusEvent<HTMLInputElement>) => {
     if (event.target.innerText.replace(/\s/g, "") === "") {
       setTitle("Untitled");
+      setText("Untitled");
     }
     setIsFocused(false);
     event.target.scrollTop = 0;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e?.currentTarget?.innerHTML || "");
+    setTitle(contentEditable?.current?.el?.current?.innerText);
+    setText(e?.currentTarget?.innerHTML);
+    // check github issue to maybe add max text length in future
+    // or just add a red text next to content editable saying # characters left
   };
+
+  const showLimit =
+    (title.length > characterLimit - warningLimit && isFocused) ||
+    title.length > characterLimit;
+
+  const lengthLimitText = () =>
+    showLimit ? (
+      <span
+        style={{
+          position: "absolute",
+          right: "2px",
+          bottom: "1px",
+          fontSize: "11px",
+          color: title.length > characterLimit ? "red" : "black",
+        }}
+      >
+        {characterLimit - title.length}
+      </span>
+    ) : null;
 
   return (
     <Grid container justifyContent={"center"}>
-      <ContentEditable
-        id="title"
-        html={title}
-        onFocus={handleFocus}
-        onBlur={handleUnfocus}
-        onChange={handleChange}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onInput={() => {}}
-        onKeyPress={() => {}}
-        onKeyDown={() => {}}
-        style={{
-          minWidth: "100px",
-          padding: "2px 4px",
-          maxWidth: matches ? "100px" : "",
-          maxHeight: "38px",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          boxShadow: isHovered && !isFocused ? "0 0 0 1px #e0e0e0 inset" : "",
-          borderRadius: isHovered || isFocused ? "5px" : "",
-          whiteSpace: matches && !isFocused ? "nowrap" : undefined,
-          display: !isFocused ? "-webkit-box" : "",
-          WebkitLineClamp: !isFocused ? 2 : "none",
-          WebkitBoxOrient: !isFocused ? "vertical" : "",
-        }}
-      />
+      <div style={{ position: "relative" }}>
+        <ContentEditable
+          id="title"
+          ref={contentEditable}
+          html={text}
+          onFocus={handleFocus}
+          onBlur={handleUnfocus}
+          onChange={handleChange}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onInput={() => {}}
+          onKeyPress={() => {}}
+          onKeyDown={() => {}}
+          style={{
+            minWidth: "100px",
+            padding: "2px 4px",
+            maxWidth: matches ? "100px" : "",
+            maxHeight: "38px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            boxShadow: isHovered && !isFocused ? "0 0 0 1px #e0e0e0 inset" : "",
+            borderRadius: isHovered || isFocused ? "5px" : "",
+            whiteSpace: matches && !isFocused ? "nowrap" : undefined,
+            display: !isFocused ? "-webkit-box" : "",
+            WebkitLineClamp: !isFocused ? 2 : "none",
+            WebkitBoxOrient: !isFocused ? "vertical" : "",
+            wordBreak: "break-all", // only do this if I actually track there is a super long word in the title? Like at least 30 characters??
+            paddingRight: showLimit ? "20px" : "4px",
+          }}
+        />
+        {lengthLimitText()}
+      </div>
     </Grid>
   );
 };

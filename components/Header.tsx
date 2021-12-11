@@ -18,6 +18,7 @@ import Title from "./Title";
 import CreateBar from "./CreateBar";
 import Image from "next/image";
 import logo from "../public/storivu.svg";
+import { useTitleContext } from "./contexts/TitleContext";
 
 const NoSelect = styled(Box)({
   webkitTouchCallout: "none",
@@ -55,12 +56,14 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = React.useState(false);
+  const { title, setTitle } = useTitleContext();
+  const titleRef = React.useRef("Untitled");
+  // const [title, setTitle] = React.useState("Untitled");
   const { user } = useAuth();
   const router = useRouter();
   const isLogin = router.pathname.includes("/login");
   const isCreate = router.pathname.includes("/create");
   const matches = useMediaQuery("(min-width:800px)");
-
   return (
     <AppBar position="static">
       <Toolbar>
@@ -97,16 +100,15 @@ const Header = () => {
             </Box>
           </Link>
         </div>
-        <Title />
+        {isCreate && <Title />}
         <div
           style={{
             // maybe only minwidth with title present
-            minWidth: matches ? "250px" : "",
+            minWidth: matches ? "100px" : "",
             display: "flex",
             justifyContent: "flex-end",
           }}
         >
-          <CreateBar />
           {!user && !isLogin && !isCreate && (
             <Link href="/login" passHref>
               <Button variant="contained" size="small">
@@ -114,7 +116,7 @@ const Header = () => {
               </Button>
             </Link>
           )}
-          {user && !isCreate && (
+          {user && (
             <Link href={`/${user.displayName}`} passHref>
               <Button variant="text" color="secondary" size="small">
                 {user.displayName}

@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 import { ThemeProvider } from "@material-ui/core";
 import { AuthProvider } from "../auth";
 import { theme } from "../components/theme";
+import { TitleProvider } from "../components/contexts/TitleContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   React.useEffect(() => {
@@ -17,9 +18,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <TitleProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </TitleProvider>
       </AuthProvider>
     </ThemeProvider>
   );
